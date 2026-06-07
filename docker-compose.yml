@@ -1,0 +1,31 @@
+services:
+  app:
+    build: .
+    container_name: task_app
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - backend
+  
+  db:
+    image: mariadb:11
+    container_name: task_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - backend
+
+volumes:
+  mariadb_data:
+
+networks:
+  backend:
