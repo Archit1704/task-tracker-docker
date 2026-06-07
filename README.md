@@ -1,138 +1,111 @@
-# 📌 Task Tracker (v2.0)
+# 📌 Task Tracker
 
-A full-stack **Task Management Application** built with **Node.js, Express, MySQL, and Vanilla JS**.
-
-This project evolved from a basic task API to a **user-based task system with authentication, validation, and analytics**.
-
----
-
-## 🚀 Tech Stack
-
-* 🟢 Node.js
-* ⚡ Express.js
-* 🗄️ MySQL
-* 🔐 JWT Authentication
-* 🎨 HTML, CSS, JavaScript
-
----
+A simple full-stack task tracker built with **Node.js**, **Express**, **MySQL/MariaDB**, and **Vanilla JavaScript**. It includes login/signup, task CRUD, and a small chart-based status overview 📊
 
 ## ✨ Features
 
-### 🔐 Authentication
+- 🔐 User signup and login
+- 📝 Create, view, update, and delete tasks
+- 📊 Task status chart on the dashboard
+- 🚦 Protected task routes using JWT
+- 🐳 Docker support with `Dockerfile` and `docker-compose.yml`
 
-* User signup & login
-* JWT-based authentication
-* Protected routes (user-specific data)
+## 🛠️ Tech Stack
 
-### 📋 Task Management
-
-* ➕ Create tasks
-* 📥 View user-specific tasks
-* 🔄 Update task status
-* ❌ Delete tasks
-
-### 📊 Analytics
-
-* Task statistics (pending, completed, etc.)
-* Visualized using charts
-
-### 🛡️ Validation
-
-* Frontend + backend validation
-* Prevents empty or invalid data
-
----
+- Node.js
+- Express
+- MySQL / MariaDB
+- JWT + bcrypt
+- HTML, CSS, JavaScript
+- Chart.js
 
 ## 📁 Project Structure
 
-```
-task-tracker/
-│
-├── frontend/        # 🌐 Frontend (HTML, CSS, JS)
-├── server.js        # 🚀 Backend (Express API)
-├── db.js            # 🗄️ Database connection
+```text
+.
+├── frontend/
+│   ├── index.html      # Dashboard UI
+│   ├── login.html      # Login / signup page
+│   └── script.js       # Frontend logic
+├── db.js               # MySQL connection
+├── server.js           # Express server and API routes
+├── Dockerfile
+├── docker-compose.yml
+├── .env.example
 ├── package.json
-└── .gitignore
+└── README.md
 ```
 
----
+## 🚀 Run Locally
 
-## ⚙️ Installation
+1. Install dependencies:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/task-tracker.git
-cd task-tracker
 npm install
 ```
 
----
-
-## 🔑 Environment Variables
-
-Create a `.env` file:
-
-```
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=yourpassword
-DB_NAME=taskdb
-PORT=3000
-JWT_SECRET=secretkey
-```
-
----
-
-## ▶️ Run the Project
+2. Create a `.env` file from `.env.example`:
 
 ```bash
-node server.js
+cp .env.example .env
 ```
 
-Open:
+3. Start the server:
 
+```bash
+npm start
 ```
+
+4. Open the app:
+
+```text
 http://localhost:3000
 ```
 
----
+## 🔑 Environment Variables
 
-## 🔗 API Endpoints
+The project includes an `.env.example` file with the current variables used by the app and Docker:
 
-### 🔐 Auth
+```env
+DB_HOST=db
+DB_USER=root
+DB_PASSWORD=rootpassword
+DB_NAME=taskdb
 
-* `POST /signup`
-* `POST /login`
+MYSQL_ROOT_PASSWORD=rootpassword
+MYSQL_DATABASE=taskdb
+```
 
-### 📋 Tasks (Protected)
+For local non-Docker setup, `DB_HOST` is usually `localhost`.
 
-* `POST /tasks` → Create task
-* `GET /tasks` → Get user tasks
-* `PUT /tasks/:id` → Update status
-* `DELETE /tasks/:id` → Delete task
+## 🐳 Run With Docker
 
-### 📊 Stats
+```bash
+docker compose up --build
+```
 
-* `GET /stats` → Task statistics
+This starts:
 
----
+- `app` on port `3000`
+- `db` using `mariadb:11`
 
-## 🏷️ Versioning
+## 🔗 API Routes
 
-* `v1.0` → Basic task API
-* `v2.0` → Authentication + user-specific tasks + validation + stats
+- `POST /signup`
+- `POST /login`
+- `GET /tasks`
+- `POST /tasks`
+- `PUT /tasks/:id`
+- `DELETE /tasks/:id`
+- `GET /stats`
 
----
+## ⚠️ Notes
 
-## 🔮 Future Improvements
-
-* 🌐 Deploy on AWS EC2 with domain & SSL
-* ⚙️ CI/CD pipeline (Jenkins)
-* 🐳 Docker containerization
-* ⏱️ Task deadlines & reminders
-
----
+- The frontend is served from the `frontend/` folder.
+- The root route `/` opens `frontend/login.html`.
+- The current server code uses a hardcoded JWT secret and port `3000`.
+- A database schema SQL file is not included in this repository, so the required tables need to exist before the app can work fully.
 
 ## 👨‍💻 Author
 
-**Archit Sharma**
-
+Archit Sharma
