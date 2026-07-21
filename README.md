@@ -1,42 +1,52 @@
-# 📌 Task Tracker
+# Task Tracker
 
-A simple full-stack task tracker built with **Node.js**, **Express**, **MySQL/MariaDB**, and **Vanilla JavaScript**. It includes login/signup, task CRUD, and a small chart-based status overview 📊
+Task Tracker is a small full-stack task management app built with Node.js, Express, MariaDB/MySQL, and plain HTML/CSS/JavaScript. It supports user signup and login, task creation, status updates, deletion, and a simple chart-based overview of task status.
 
-## ✨ Features
+## Features
 
-- 🔐 User signup and login
-- 📝 Create, view, update, and delete tasks
-- 📊 Task status chart on the dashboard
-- 🚦 Protected task routes using JWT
-- 🐳 Docker support with `Dockerfile` and `docker-compose.yml`
+- User signup and login with hashed passwords
+- JWT-protected task endpoints
+- Create, list, update, and delete personal tasks
+- Pie chart dashboard using Chart.js
+- Docker support for the app and database
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - Node.js
 - Express
-- MySQL / MariaDB
-- JWT + bcrypt
-- HTML, CSS, JavaScript
+- MariaDB / MySQL
+- `mysql2`
+- `bcrypt`
+- `jsonwebtoken`
+- Vanilla HTML, CSS, and JavaScript
 - Chart.js
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 .
+├── database/
+│   └── init.sql
 ├── frontend/
-│   ├── index.html      # Dashboard UI
-│   ├── login.html      # Login / signup page
-│   └── script.js       # Frontend logic
-├── db.js               # MySQL connection
-├── server.js           # Express server and API routes
+│   ├── index.html
+│   ├── login.html
+│   └── script.js
+├── db.js
 ├── Dockerfile
 ├── docker-compose.yml
-├── .env.example
+├── package-lock.json
 ├── package.json
-└── README.md
+├── README.md
+└── server.js
 ```
 
-## 🚀 Run Locally
+## Prerequisites
+
+- Node.js 18 or newer
+- npm
+- MySQL or MariaDB
+
+## Local Setup
 
 1. Install dependencies:
 
@@ -44,68 +54,96 @@ A simple full-stack task tracker built with **Node.js**, **Express**, **MySQL/Ma
 npm install
 ```
 
-2. Create a `.env` file from `.env.example`:
+2. Create a `.env` file in the project root:
 
-```bash
-cp .env.example .env
+```env
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=taskdb
+MYSQL_ROOT_PASSWORD=your_password
+MYSQL_DATABASE=taskdb
 ```
 
-3. Start the server:
+3. Create the database schema by running the SQL in `database/init.sql`.
+
+4. Start the server:
 
 ```bash
 npm start
 ```
 
-4. Open the app:
+5. Open the app at `http://localhost:3000`.
 
-```text
-http://localhost:3000
-```
+## Docker Setup
 
-## 🔑 Environment Variables
-
-The project includes an `.env.example` file with the current variables used by the app and Docker:
+1. Create a `.env` file in the project root:
 
 ```env
 DB_HOST=db
 DB_USER=root
 DB_PASSWORD=rootpassword
 DB_NAME=taskdb
-
 MYSQL_ROOT_PASSWORD=rootpassword
 MYSQL_DATABASE=taskdb
 ```
 
-For local non-Docker setup, `DB_HOST` is usually `localhost`.
-
-## 🐳 Run With Docker
+2. Start the containers:
 
 ```bash
 docker compose up --build
 ```
 
-This starts:
+The compose setup starts:
 
 - `app` on port `3000`
 - `db` using `mariadb:11`
 
-## 🔗 API Routes
+The database container loads `database/init.sql` automatically on first startup.
+
+## API Endpoints
+
+### Authentication
 
 - `POST /signup`
 - `POST /login`
+
+### Tasks
+
 - `GET /tasks`
 - `POST /tasks`
 - `PUT /tasks/:id`
 - `DELETE /tasks/:id`
 - `GET /stats`
 
-## ⚠️ Notes
+Task endpoints require the JWT token in the `Authorization` header.
 
-- The frontend is served from the `frontend/` folder.
-- The root route `/` opens `frontend/login.html`.
-- The current server code uses a hardcoded JWT secret and port `3000`.
-- A database schema SQL file is not included in this repository, so the required tables need to exist before the app can work fully.
+## Database Schema
 
-## 👨‍💻 Author
+The app uses two tables:
 
-Archit Sharma
+- `users`
+- `tasks`
+
+The schema is defined in `database/init.sql`.
+
+## Frontend Flow
+
+- `/` serves `frontend/login.html`
+- After login, the token is stored in `localStorage`
+- Authenticated users are redirected to `frontend/index.html`
+- The dashboard loads tasks and chart data from the backend API
+
+## Current Limitations
+
+- The JWT secret is hardcoded in `server.js`
+- The app port is hardcoded to `3000`
+- Login and signup UI error handling is minimal
+- There is no logout/session invalidation on the server side
+- There are no automated tests configured in `package.json`
+
+## Scripts
+
+```bash
+npm start
+```
