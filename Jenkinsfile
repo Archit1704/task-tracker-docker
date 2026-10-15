@@ -1,23 +1,26 @@
 
-pipeline {
-    agent any
+stage('SonarQube Analysis') {
+    steps {
+        script {
+            def scannerHome = tool 'SonarScanner'
 
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
+            withSonarQubeEnv('SonarQube') {
+                sh """
+                    ${scannerHome}/bin/sonar-scanner \
+                      -Dsonar.projectKey=devops-demo \
+                      -Dsonar.projectName=devops-demo \
+                      -Dsonar.sources=. \
+                      -Dsonar.exclusions=**/node_modules/**,**/coverage/**,**/dist/**,**/.git/**
+                """
             }
         }
+    }
+}
 
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh '''
-                        echo "Repository checkout completed"
-                        echo "Scanner analysis will be configured for this project"
-                    '''
-                }
-            }
+stage('Quality Gate') {
+    steps {
+        timeout(time: 5, unit: 'MINUTES') {
+            waitForQualityGate abortPipeline: true
         }
     }
 }
